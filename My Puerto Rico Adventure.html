@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Puerto Rico Adventure - Scrapbook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #f4e8d8;
+            color: #3c2f2f;
+            overflow-x: hidden;
+        }
+
+        /* Hero Scrapbook */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #f4e8d8 0%, #e8d4b8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(0,0,0,0.02) 20px, rgba(0,0,0,0.02) 21px);
+        }
+
+        .scrapbook-title {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .tape {
+            width: 120px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.4);
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-5deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .scrapbook-title h1 {
+            font-size: 4rem;
+            font-family: 'Brush Script MT', cursive;
+            color: #8b4513;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+        }
+
+        .subtitle-handwritten {
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 1.5rem;
+            color: #a0522d;
+        }
+
+        .start-reading {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: #d4a574;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .start-reading:hover {
+            transform: translateY(-3px);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Section */
+        section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        .page {
+            background: white;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .page::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20%;
+            width: 80px;
+            height: 25px;
+            background: rgba(255, 248, 220, 0.8);
+            transform: rotate(-3deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .page-number {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            color: #d4a574;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .chapter-title {
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 2.5rem;
+            color: #8b4513;
+            margin-bottom: 2rem;
+            border-bottom: 3px dashed #d4a574;
+            padding-bottom: 1rem;
+        }
+
+        .handwritten-note {
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #4a4a4a;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Polaroid */
+        .polaroid {
+            background: white;
+            padding: 15px;
+            padding-bottom: 60px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: inline-block;
+            margin: 2rem 1rem;
+            transform: rotate(-2deg);
+            transition: transform 0.3s;
+            max-width: 350px;
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 10;
+        }
+
+        .polaroid:nth-child(even) {
+            transform: rotate(3deg);
+        }
+
+        .polaroid:nth-child(even):hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        .polaroid-img {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .polaroid-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .polaroid-caption {
+            text-align: center;
+            margin-top: 15px;
+            font-family: 'Comic Sans MS', cursive;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        /* Sticky Note */
+        .sticky-note {
+            background: #fef3c7;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            transform: rotate(-1deg);
+            border-left: 3px solid #fbbf24;
+            position: relative;
+        }
+
+        .sticky-note::before {
+            content: '📌';
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            font-size: 1.5rem;
+        }
+
+        /* Day Page */
+        .day-page {
+            background: white;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            position: relative;
+            border-radius: 5px;
+        }
+
+        .day-page::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            right: 25%;
+            width: 100px;
+            height: 30px;
+            background: rgba(212, 165, 116, 0.6);
+            transform: rotate(2deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px dashed #d4a574;
+        }
+
+        .day-icon {
+            font-size: 3rem;
+        }
+
+        .day-info h3 {
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 2rem;
+            color: #8b4513;
+            margin-bottom: 0.5rem;
+        }
+
+        .location-tag {
+            display: inline-block;
+            background: #d4a574;
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        /* Navigation */
+        .nav-scrapbook {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding: 1rem;
+            background: rgba(212, 165, 116, 0.1);
+            border-radius: 10px;
+        }
+
+        .nav-scrapbook a {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: #d4a574;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-family: 'Comic Sans MS', cursive;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+
+        .nav-scrapbook a:hover {
+            transform: translateY(-2px);
+            box-shadow: 5px 5px 12px rgba(0,0,0,0.3);
+        }
+
+        .nav-scrapbook span {
+            font-family: 'Comic Sans MS', cursive;
+            color: #8b4513;
+        }
+
+        footer {
+            background: #e8d4b8;
+            padding: 3rem;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive;
+            color: #8b4513;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .scrapbook-title h1 {
+                font-size: 2.5rem;
+            }
+            .polaroid {
+                max-width: 100%;
+            }
+            .photo-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <div class="hero">
+        <div class="scrapbook-title">
+            <div class="tape"></div>
+            <h1>My Puerto Rico<br>Adventure</h1>
+            <p class="subtitle-handwritten">A travel scrapbook ✈️</p>
+            <a href="#page1" class="start-reading">Open the Book</a>
+        </div>
+    </div>
+
+    <!-- Page 1: How It Started -->
+    <section id="page1">
+        <div class="page">
+            <div class="page-number">01</div>
+            <h2 class="chapter-title">How It All Started 🌟</h2>
+            
+            <p class="handwritten-note">It all started in 2020, when I met a Puerto Rican girl during high school. We became very close, made many plans, and one of them was to visit Puerto Rico together! Since then, we've made around 5 trips to the island, creating unforgettable memories each time.</p>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;" class="polaroid-img">
+                        <img src="https://i.ibb.co/jkLSypxy/Screenshot-2025-11-09-at-5-25-38-PM.png" alt="Puerto Rico Map">
+                    </div>
+                    <div class="polaroid-caption">Puerto Rico - The Island of Enchantment</div>
+                </div>
+            </div>
+
+            <p class="handwritten-note">Between those trips, Puerto Rico had already stolen my heart. But in June 2025, I needed a break from work and my friend wasn't available, so I decided it was time for my first SOLO journey to explore the island on my own terms!</p>
+
+            <div class="nav-scrapbook">
+                <a href="#">← Start</a>
+                <span>Page 1 of 10</span>
+                <a href="#page2">Next →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: Solo Trip Intro -->
+    <section id="page2">
+        <div class="page">
+            <div class="page-number">02</div>
+            <h2 class="chapter-title">Solo Adventure Begins! 🚗</h2>
+            
+            <p class="handwritten-note">June 2025 - Time for my FIRST SOLO TRIP around the island!</p>
+
+            <div class="sticky-note">
+                <strong>The Plan:</strong><br>
+                ✈️ Fly from Maryland to San Juan<br>
+                🚗 Rent a car<br>
+                🎒 Pack light<br>
+                🗺️ Explore the entire island<br>
+                ⏰ 8 days of adventure!
+            </div>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/NDdGn9Y/Screenshot-2025-11-09-at-5-35-11-PM.png" alt="Welcome to San Juan">
+                    </div>
+                    <div class="polaroid-caption">Welcome to San Juan!</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/B5hqgQVF/Screenshot-2025-11-09-at-5-35-22-PM.png" alt="Rental car">
+                    </div>
+                    <div class="polaroid-caption">My ride for the week</div>
+                </div>
+            </div>
+
+            <p class="handwritten-note">A backpack, a rental car, and 8 days to explore Puerto Rico from coast to coast. Let's GO! 🌴</p>
+
+            <div class="nav-scrapbook">
+                <a href="#page1">← Previous</a>
+                <span>Page 2 of 10</span>
+                <a href="#day1">Next: Day 1 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAY 1: San Juan -->
+    <section id="day1">
+        <div class="day-page">
+            <div class="page-number">03</div>
+            <div class="day-header">
+                <div class="day-icon">🏙️</div>
+                <div class="day-info">
+                    <h3>Day 1: Arrival</h3>
+                    <span class="location-tag">📍 San Juan</span>
+                </div>
+            </div>
+
+            <p class="handwritten-note">I arrived in San Juan and the first thing was to organize the trip! Last-minute shopping, checking the rental car, and planning my route around the island.</p>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/0p5k7qZx/IMG-5654.png" alt="San Juan arrival">
+                    </div>
+                    <div class="polaroid-caption">Welcome to San Juan!</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/Fk87jdv1/IMG-5691.jpg" alt="Getting ready">
+                    </div>
+                    <div class="polaroid-caption">Getting ready!</div>
+                </div>
+            </div>
+
+            <p class="handwritten-note">The excitement of being on the island again, but this time on my OWN, was indescribable! Time to explore! 🗺️</p>
+
+            <div class="nav-scrapbook">
+                <a href="#page2">← Previous</a>
+                <span>Day 1 of 8</span>
+                <a href="#day2">Next: Day 2 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAY 2: Aguadilla -->
+    <section id="day2">
+        <div class="day-page">
+            <div class="page-number">04</div>
+            <div class="day-header">
+                <div class="day-icon">🏖️</div>
+                <div class="day-info">
+                    <h3>Day 2: North Coast</h3>
+                    <span class="location-tag">📍 San Juan → Arecibo → Aguadilla (PR-22)</span>
+                </div>
+            </div>
+
+            <p class="handwritten-note">I drove along the beautiful north coast! Passed through Arecibo with its famous rock formations. Aguadilla surprised me with its vibrant parks and houses painted in BRIGHT colors! 🌈</p>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;" class="polaroid-img">
+                        <img src="https://i.ibb.co/GfDnWhrd/Screenshot-2025-11-09-at-5-15-33-PM.png" alt="PR-22 highway">
+                    </div>
+                    <div class="polaroid-caption">On the road - PR-22</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/7tykzt0S/IMG-0979.jpg" alt="Colorful houses">
+                    </div>
+                    <div class="polaroid-caption"> Aguadilla park</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/0dMg993/IMG-0987.jpg" alt="Aguadilla park">
+                    </div>
+                    <div class="polaroid-caption">Colorful houses in Aguadilla</div>
+                </div>
+            </div>
+
+            <p class="handwritten-note">Spent the night enjoying the sea breeze and the tranquility of the town. This is what I needed! 🌊</p>
+
+            <div class="nav-scrapbook">
+                <a href="#day1">← Day 1</a>
+                <span>Day 2 of 8</span>
+                <a href="#day3">Next: Day 3 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAY 3: West Coast -->
+    <section id="day3">
+        <div class="day-page">
+            <div class="page-number">05</div>
+            <div class="day-header">
+                <div class="day-icon">🌊</div>
+                <div class="day-info">
+                    <h3>Day 3: The West Coast</h3>
+                    <span class="location-tag">📍 Aguadilla → Aguada → Rincón → Mayagüez → Cabo Rojo</span>
+                </div>
+            </div>
+
+            <p class="handwritten-note">THIS WAS THE BEST DAY! I drove along the entire west coast, stopping at every beach that caught my attention.</p>
+
+            <div class="sticky-note" style="background: #ffebee; border-left-color: #ef5350;">
+                <strong>Cabo Rojo Impact:</strong><br>
+                The natural beauty is STUNNING, but years after Hurricane María, there are still areas that look like ghost towns. It's a powerful reminder of the island's resilience. 💪🇵🇷
+            </div>
+   
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;"class="polaroid-img">
+                        <img src="https://i.ibb.co/xtPrn7j1/Screenshot-2025-11-09-at-5-16-33-PM.png" alt="Road to Mayagüez">
+                    </div>
+                    <div class="polaroid-caption">On the road - Mayagüez</div>
+                </div>
+
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;" class="polaroid-img">
+                        <img src="https://i.ibb.co/nNjjGCq8/Screenshot-2025-11-09-at-5-18-37-PM.png" alt="Cabo Rojo">
+                    </div>
+                    <div class="polaroid-caption">On the road - Cabo Rojo</div>
+                </div>
+
+                <div class="polaroid">
+                    <div style="width: 100%; height: 3.5in;" class="polaroid-img">
+                        <img src="https://i.ibb.co/21Nj3kQ1/IMG-5701.jpg" alt="Cabo Rojo sunset">
+                    </div>
+                    <div class="polaroid-caption">Cabo Rojo sunset</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/v6XVyWpB/IMG-0989.jpg" alt="Beach view">
+                    </div>
+                    <div class="polaroid-caption">Beach view</div>
+                </div>
+
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;" class="polaroid-img">
+                        <img src="https://i.ibb.co/VcMcTdRX/Screenshot-2025-11-09-at-5-18-53-PM.png" alt="Back to Mayagüez">
+                    </div>
+                    <div class="polaroid-caption">On the road - Back to Mayagüez</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/YBWmpBBz/IMG-6551.jpg" alt="Guesthouse view">
+                    </div>
+                    <div class="polaroid-caption">Guesthouse view</div>
+                </div>
+            </div>
+
+            <div class="nav-scrapbook">
+                <a href="#day2">← Day 2</a>
+                <span>Day 3 of 8</span>
+                <a href="#day4">Next: Day 4 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAY 4: Ponce -->
+    <section id="day4">
+        <div class="day-page">
+            <div class="page-number">06</div>
+            <div class="day-header">
+                <div class="day-icon">🏭</div>
+                <div class="day-info">
+                    <h3>Day 4: Southern Route</h3>
+                    <span class="location-tag">📍 Mayagüez → Ponce → San Juan (PR-52)</span>
+                </div>
+            </div>
+
+            <p class="handwritten-note">I drove south to visit Ponce. Honestly? Not my favorite. It's more industrial and I didn't feel the same connection as with other places.</p>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;" class="polaroid-img">
+                        <img src="https://i.ibb.co/TMDcK4Zs/Screenshot-2025-11-09-at-5-19-16-PM.png" alt="Road to Ponce">
+                    </div>
+                    <div class="polaroid-caption">On the road - Ponce</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/3VgLTDy/IMG-0192.jpg" alt="Ponce city">
+                    </div>
+                    <div class="polaroid-caption">Ponce - Industrial vibes</div>
+                </div>
+
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;" class="polaroid-img">
+                        <img src="https://i.ibb.co/rR0hkN92/Screenshot-2025-11-09-at-5-19-38-PM.png" alt="PR-52 highway">
+                    </div>
+                    <div class="polaroid-caption">PR-52 - Las Américas Highway</div>
+                </div>
+            </div>
+
+            <p class="handwritten-note">Made the decision to head back to San Juan to enjoy my final days better. Sometimes it's okay to change plans! 🔄</p>
+
+            <div class="nav-scrapbook">
+                <a href="#day3">← Day 3</a>
+                <span>Day 4 of 8</span>
+                <a href="#day5">Next: Day 5 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAY 5: Friends -->
+    <section id="day5">
+        <div class="day-page">
+            <div class="page-number">07</div>
+            <div class="day-header">
+                <div class="day-icon">👥</div>
+                <div class="day-info">
+                    <h3>Day 5: Local Friends</h3>
+                    <span class="location-tag">📍 San Juan</span>
+                </div>
+            </div>
+
+            <p class="handwritten-note">Spent the day with local friends! Meeting Puerto Rican people is always SO enriching. Their stories, their perspective on life, their warmth... amazing! 🤗</p>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div style="width: 3in; height: 5in;" class="polaroid-img">
+                        <img src="https://i.ibb.co/GQg3j39v/B110-C55-E-CDC2-4-A9-D-8-FA5-A9-F3-E28-C129-C.jpg" alt="Local food">
+                    </div>
+                    <div class="polaroid-caption">Local food experience</div>
+                </div>
+
+                <div class="polaroid">
+                    <div style="width: 3in; height: 5in;" class="polaroid-img">
+                        <img src="https://i.ibb.co/G3H9WcRZ/IMG-2572.png" alt="Beach night">
+                    </div>
+                    <div class="polaroid-caption">Beach Night</div>
+                </div>
+            </div>
+
+            <div class="nav-scrapbook">
+                <a href="#day4">← Day 4</a>
+                <span>Day 5 of 8</span>
+                <a href="#day6">Next: Day 6 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAY 6: El Yunque -->
+    <section id="day6">
+        <div class="day-page">
+            <div class="page-number">08</div>
+            <div class="day-header">
+                <div class="day-icon">🌿</div>
+                <div class="day-info">
+                    <h3>Day 6: El Yunque</h3>
+                    <span class="location-tag">📍 El Yunque Trail</span>
+                </div>
+            </div>
+
+            <p class="handwritten-note">Today I explored El Yunque! The lush rainforest, stunning waterfalls, and vibrant wildlife... A true paradise! 🌿🌊</p>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;" class="polaroid-img">
+                        <img src="https://i.ibb.co/whThjC4f/Screenshot-2025-11-09-at-5-20-04-PM.png" alt="Road to El Yunque">
+                    </div>
+                    <div class="polaroid-caption">On the road - El Yunque</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/B5rhk30T/IMG-1027.jpg" alt="Mt Britton Tower">
+                    </div>
+                    <div class="polaroid-caption">Mt. Britton Trail And Tower</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/PZgVgVPD/IMG-1025.jpg" alt="Mt Britton Tower 2">
+                    </div>
+                    <div class="polaroid-caption">Mt. Britton Trail And Tower</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/1fH2cfty/IMG-1038.jpg" alt="Baño Grande">
+                    </div>
+                    <div class="polaroid-caption">Baño Grande<br>Civilian Conservation Corps</div>
+                </div>
+
+                <div class="polaroid">
+                    <div style="width: 100%; height: auto;" class="polaroid-img">
+                        <img src="https://i.ibb.co/hRRCvs1G/IMG-1023.jpg" alt="Bano de Oro Trail">
+                    </div>
+                    <div class="polaroid-caption">Bano de Oro Trail</div>
+                </div>
+            </div>
+
+            <div class="nav-scrapbook">
+                <a href="#day5">← Day 5</a>
+                <span>Day 6 of 8</span>
+                <a href="#day7">Next: Day 7 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAY 7: Old San Juan -->
+    <section id="day7">
+        <div class="day-page">
+            <div class="page-number">09</div>
+            <div class="day-header">
+                <div class="day-icon">🏰</div>
+                <div class="day-info">
+                    <h3>Day 7: Old San Juan Tour</h3>
+                    <span class="location-tag">📍 Viejo San Juan</span>
+                </div>
+            </div>
+
+            <p class="handwritten-note">Today I explored Old San Juan! The cobblestone streets, colonial buildings, El Morro fortress... LIVING HISTORY! Every corner tells a story. 🏛️</p>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/sJ320H2w/IMG-0193.jpg" alt="El Morro">
+                        
+                    </div>
+                    <div class="polaroid-caption">El Morro - Epic fortress!</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/bjNdHyXM/IMG-5690.jpg" alt="El Morro 2">
+                    </div>
+                    <div class="polaroid-caption">El Morro</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/7xbVLX5X/IMG-0951.jpg" alt="Colorful streets">
+                    </div>
+                    <div class="polaroid-caption">Colorful streets of Old SJ</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/tMdTkFqy/IMG-1065.jpg" alt="Colorful streets 2">
+                    </div>
+                    <div class="polaroid-caption">Colorful streets of Old SJ</div>
+                </div>
+
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/Ps7ryDf9/IMG-0946.jpg" alt="Colonial architecture">
+                    </div>
+                    <div class="polaroid-caption">Colonial architecture</div>
+                </div>
+            </div>
+
+            <div class="nav-scrapbook">
+                <a href="#day6">← Day 6</a>
+                <span>Day 7 of 8</span>
+                <a href="#day8">Next: Day 8 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DAY 8: Farewell -->
+    <section id="day8">
+        <div class="day-page">
+            <div class="page-number">10</div>
+            <div class="day-header">
+                <div class="day-icon">✈️</div>
+                <div class="day-info">
+                    <h3>Day 8: Farewell</h3>
+                    <span class="location-tag">📍 San Juan → Home</span>
+                </div>
+            </div>
+
+            <p class="handwritten-note">Last day... Time to head home. My heart is FULL and I'm already planning my return! 💔✈️</p>
+
+            <div class="sticky-note" style="background: #f3e5f5; border-left-color: #9c27b0;">
+                <strong>What I'm taking home:</strong><br>
+                ❤️ Amazing memories<br>
+                📸 Hundreds of photos<br>
+                🎶 Salsa in my soul<br>
+                🌴 A piece of Puerto Rico in my heart<br>
+                🎫 A promise to return soon!
+            </div>
+
+            <div class="photo-gallery">
+                <div class="polaroid">
+                    <div class="polaroid-img">
+                        <img src="https://i.ibb.co/1Gdqb2s6/IMG-2693.jpg" alt="Farewell Puerto Rico">
+                    </div>
+                    <div class="polaroid-caption">Until next time, Puerto Rico! 🇵🇷</div>
+                </div>
+            </div>
+
+            <div class="sticky-note" style="background: #fef3c7; border-left-color: #3b82f6;">
+                <p style="font-size: 1.25rem; font-style: italic; text-align: center;">
+                    "Every trip to Puerto Rico taught me something new: its people, its culture, and its RESILIENCE. Today the island already feels like my SECOND HOME." 🏝️❤️
+                </p>
+            </div>
+
+            <div class="nav-scrapbook">
+                <a href="#day7">← Day 7</a>
+                <span>Day 8 of 8</span>
+                <a href="#">Back to Start →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>✈️ My Best Vacation - Puerto Rico 🇵🇷 ✈️</p>
+        <p style="margin-top: 1rem;">Made by Jeff Molina • 2025</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
